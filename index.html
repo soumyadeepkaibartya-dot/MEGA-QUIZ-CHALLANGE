@@ -237,6 +237,17 @@
             font-weight: 600;
         }
 
+        .points-display {
+            display: inline-block;
+            background: #2ecc71;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-left: 8px;
+            font-weight: bold;
+        }
+
         .btn-next {
             width: 100%;
             background: linear-gradient(45deg, #ff007f, #7f00ff);
@@ -256,12 +267,12 @@
             box-shadow: 0 8px 16px rgba(255, 0, 127, 0.3);
         }
 
-        /* --- SUCCESS ANIMATION --- */
+        /* --- DIWALI SUCCESS ANIMATION --- */
         .fullscreen-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.95);
             z-index: 9999;
             justify-content: center;
             align-items: center;
@@ -284,31 +295,49 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
+        .diwali-firework {
+            position: absolute;
+            font-size: 50px;
+            animation: firework 1.5s ease-out forwards;
+        }
+
+        @keyframes firework {
+            0% { opacity: 1; transform: translate(0, 0) scale(1); }
+            100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0); }
+        }
+
         .checkmark {
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            background: #2ecc71;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 60px;
             margin: 0 auto 20px;
-            box-shadow: 0 0 50px #2ecc71;
+            box-shadow: 0 0 50px #FFD700;
+            animation: pulse 0.6s ease-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
 
         .success-text {
             font-size: 32px;
             font-weight: bold;
             margin-bottom: 20px;
-            background: linear-gradient(45deg, #00ffcc, #0099ff);
+            background: linear-gradient(45deg, #FFD700, #FFA500);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .success-subtitle {
             font-size: 18px;
-            color: #ccc;
+            color: #FFD700;
             margin-bottom: 10px;
         }
 
@@ -428,46 +457,6 @@
             transform: scale(1.05);
         }
 
-        /* --- ADMIN DASHBOARD --- */
-        .admin-dashboard {
-            background: #1a1a1a;
-            border: 2px solid #444;
-            padding: 20px;
-            border-radius: 8px;
-            max-height: 500px;
-            overflow-y: auto;
-            text-align: left;
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
-            color: #00ff00;
-            margin-top: 20px;
-        }
-
-        .admin-title {
-            color: #ff00ff;
-            font-weight: bold;
-            margin-bottom: 15px;
-            font-size: 16px;
-            text-align: center;
-        }
-
-        .log-entry {
-            margin-bottom: 10px;
-            padding: 8px;
-            background: #0a0a0a;
-            border-left: 3px solid #00ff00;
-            border-radius: 3px;
-        }
-
-        .log-label {
-            color: #00ffff;
-            font-weight: bold;
-        }
-
-        .log-value {
-            color: #ffff00;
-        }
-
         /* --- RESULT PAGE --- */
         .result-container {
             background: white;
@@ -513,6 +502,45 @@
             50% { transform: translateY(-20px); }
         }
 
+        .admin-dashboard {
+            background: #1a1a1a;
+            border: 2px solid #444;
+            padding: 20px;
+            border-radius: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+            text-align: left;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #00ff00;
+            margin-top: 20px;
+        }
+
+        .admin-title {
+            color: #ff00ff;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .log-entry {
+            margin-bottom: 10px;
+            padding: 8px;
+            background: #0a0a0a;
+            border-left: 3px solid #00ff00;
+            border-radius: 3px;
+        }
+
+        .log-label {
+            color: #00ffff;
+            font-weight: bold;
+        }
+
+        .log-value {
+            color: #ffff00;
+        }
+
         .btn-restart {
             width: 100%;
             background: linear-gradient(45deg, #ff007f, #7f00ff);
@@ -530,7 +558,6 @@
             transform: translateY(-2px);
         }
 
-        /* Scrollbar styling */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -722,13 +749,13 @@
         </div>
     </div>
 
-    <!-- STAGE 3: SUCCESS ANIMATION -->
+    <!-- STAGE 3: SUCCESS ANIMATION (2 SECONDS) -->
     <div class="fullscreen-overlay" id="successOverlay">
         <div class="success-content">
-            <div class="checkmark">✓</div>
+            <div class="checkmark">🪔</div>
             <div class="success-text">Successfully Submitted!</div>
             <div class="success-subtitle">Thank you for completing Round 1</div>
-            <div class="success-subtitle">Proceeding to Round 2...</div>
+            <div class="success-subtitle">🎉 Diwali Celebration! 🎉</div>
         </div>
     </div>
 
@@ -771,12 +798,12 @@
                 <div class="question-text">1. Which would you value more in a lifetime?</div>
                 <div class="options-group">
                     <label class="option-label">
-                        <input type="radio" name="f1" value="a" data-points="5">
-                        <span>Deep, meaningful impact on a few people. (5 points)</span>
+                        <input type="radio" name="f1" value="a" data-points="5" onchange="showPoints(this)">
+                        <span>Deep, meaningful impact on a few people. <span class="points-display hidden">+5 Points</span></span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="f1" value="b" data-points="1">
-                        <span>Broad, widespread fame or recognition. (1 point)</span>
+                        <input type="radio" name="f1" value="b" data-points="1" onchange="showPoints(this)">
+                        <span>Broad, widespread fame or recognition. <span class="points-display hidden">+1 Point</span></span>
                     </label>
                 </div>
             </div>
@@ -786,12 +813,12 @@
                 <div class="question-text">2. Which is a harder path to follow?</div>
                 <div class="options-group">
                     <label class="option-label">
-                        <input type="radio" name="f2" value="a" data-points="5">
-                        <span>Staying true to your principles even when it costs you everything. (5 points)</span>
+                        <input type="radio" name="f2" value="a" data-points="5" onchange="showPoints(this)">
+                        <span>Staying true to your principles even when it costs you everything. <span class="points-display hidden">+5 Points</span></span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="f2" value="b" data-points="0">
-                        <span>Evolving your principles to survive and adapt to any environment. (0 points)</span>
+                        <input type="radio" name="f2" value="b" data-points="0" onchange="showPoints(this)">
+                        <span>Evolving your principles to survive and adapt to any environment. <span class="points-display hidden">+0 Points</span></span>
                     </label>
                 </div>
             </div>
@@ -801,12 +828,12 @@
                 <div class="question-text">3. When you are at your lowest point, how do you recover?</div>
                 <div class="options-group">
                     <label class="option-label">
-                        <input type="radio" name="f3" value="a" data-points="-10">
-                        <span>Through total isolation and introspection. (-10 points)</span>
+                        <input type="radio" name="f3" value="a" data-points="-10" onchange="showPoints(this)">
+                        <span>Through total isolation and introspection. <span class="points-display hidden">-10 Points</span></span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="f3" value="b" data-points="10">
-                        <span>Through radical honesty with those closest to you. (10 points)</span>
+                        <input type="radio" name="f3" value="b" data-points="10" onchange="showPoints(this)">
+                        <span>Through radical honesty with those closest to you. <span class="points-display hidden">+10 Points</span></span>
                     </label>
                 </div>
             </div>
@@ -816,12 +843,12 @@
                 <div class="question-text">4. What is more important to your identity?</div>
                 <div class="options-group">
                     <label class="option-label">
-                        <input type="radio" name="f4" value="a" data-points="2">
-                        <span>The things you have achieved and can prove. (2 points)</span>
+                        <input type="radio" name="f4" value="a" data-points="2" onchange="showPoints(this)">
+                        <span>The things you have achieved and can prove. <span class="points-display hidden">+2 Points</span></span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="f4" value="b" data-points="5">
-                        <span>The struggles you have faced that no one knows about. (5 points)</span>
+                        <input type="radio" name="f4" value="b" data-points="5" onchange="showPoints(this)">
+                        <span>The struggles you have faced that no one knows about. <span class="points-display hidden">+5 Points</span></span>
                     </label>
                 </div>
             </div>
@@ -834,11 +861,11 @@
     <div class="screen" id="stage6">
         <div class="result-container">
             <div class="result-title">Final Results</div>
-            <div class="score-display" id="scoreDisplay">0/20</div>
+            <div class="score-display" id="scoreDisplay">0/25</div>
             <div class="result-message" id="resultMessage"></div>
             <div class="winner-animation" id="prizeDisplay"></div>
             <div class="admin-dashboard">
-                <div class="admin-title">📊 Admin Dashboard - Complete Choices Log</div>
+                <div class="admin-title">📊 Your Complete Responses</div>
                 <div id="adminLog"></div>
             </div>
             <button class="btn-restart" onclick="restartGame()">Play Again</button>
@@ -848,10 +875,12 @@
     <script>
         let userChoices = {
             username: '',
+            timestamp: new Date().toLocaleString(),
             q1: '', q2: '', q3: '', q4: '', q5: '', q6: '',
             bf: '',
             f1: '', f2: '', f3: '', f4: '',
-            finalScore: 0
+            finalScore: 0,
+            status: ''
         };
 
         function handleLogin() {
@@ -860,6 +889,7 @@
             
             if (username && password) {
                 userChoices.username = username;
+                userChoices.timestamp = new Date().toLocaleString();
                 showScreen('stage2');
             } else {
                 alert('Please fill in both fields');
@@ -893,10 +923,43 @@
             const overlay = document.getElementById('successOverlay');
             overlay.classList.add('active');
             
+            // Create fireworks
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    createFirework();
+                }, i * 50);
+            }
+            
             setTimeout(() => {
                 overlay.classList.remove('active');
                 showScreen('stage4');
-            }, 6000);
+            }, 2000);
+        }
+
+        function createFirework() {
+            const firework = document.createElement('div');
+            firework.className = 'diwali-firework';
+            firework.textContent = ['🎆', '🎇', '✨', '⭐', '🌟'][Math.floor(Math.random() * 5)];
+            
+            const tx = (Math.random() - 0.5) * 500;
+            const ty = (Math.random() - 0.5) * 500;
+            
+            firework.style.setProperty('--tx', tx + 'px');
+            firework.style.setProperty('--ty', ty + 'px');
+            firework.style.left = '50%';
+            firework.style.top = '50%';
+            
+            document.body.appendChild(firework);
+            
+            setTimeout(() => firework.remove(), 1500);
+        }
+
+        function showPoints(element) {
+            const label = element.parentElement;
+            const pointsDisplay = label.querySelector('.points-display');
+            if (pointsDisplay) {
+                pointsDisplay.classList.remove('hidden');
+            }
         }
 
         function bfAnswer(answer) {
@@ -904,12 +967,12 @@
             
             const doorContainer = document.getElementById('doorContainer');
             const doorInside = document.getElementById('doorInside');
-            const doorText = document.getElementById('doorText');
             
             if (answer === 'yes') {
                 doorInside.textContent = '❌ REJECTED';
                 doorInside.style.background = '#e74c3c';
                 doorContainer.classList.add('open');
+                userChoices.status = 'REJECTED IN ROUND 2';
                 
                 setTimeout(() => {
                     showScreen('stage6');
@@ -949,6 +1012,11 @@
                           parseInt(f4.dataset.points);
 
             userChoices.finalScore = Math.max(0, points);
+            userChoices.status = userChoices.finalScore >= 25 ? 'WINNER 🏆' : 'ELIMINATED';
+            
+            // Save to localStorage
+            saveToDatabase();
+            
             showScreen('stage6');
             showFinalResult();
         }
@@ -958,11 +1026,10 @@
             const scoreDisplay = document.getElementById('scoreDisplay');
             const resultMessage = document.getElementById('resultMessage');
             const prizeDisplay = document.getElementById('prizeDisplay');
-            const adminLog = document.getElementById('adminLog');
 
-            scoreDisplay.textContent = score + '/20';
+            scoreDisplay.textContent = score + '/25';
 
-            if (score < 20) {
+            if (score < 25) {
                 resultMessage.innerHTML = '<strong style="color: #e74c3c;">❌ ELIMINATED</strong><br>You scored ' + score + ' points. See you in the next game!';
                 resultMessage.style.color = '#e74c3c';
                 prizeDisplay.innerHTML = '😔';
@@ -972,51 +1039,64 @@
                 prizeDisplay.innerHTML = '💰 ₹500 💰';
             }
 
-            generateAdminLog(adminLog);
+            generateAdminLog(document.getElementById('adminLog'));
         }
 
         function showRejectedResult() {
             const scoreDisplay = document.getElementById('scoreDisplay');
             const resultMessage = document.getElementById('resultMessage');
             const prizeDisplay = document.getElementById('prizeDisplay');
-            const adminLog = document.getElementById('adminLog');
 
             scoreDisplay.textContent = 'REJECTED';
             resultMessage.innerHTML = '<strong style="color: #e74c3c;">❌ REJECTED</strong><br>You are out of the game!';
             resultMessage.style.color = '#e74c3c';
             prizeDisplay.innerHTML = '😔';
 
-            generateAdminLog(adminLog);
+            generateAdminLog(document.getElementById('adminLog'));
         }
 
         function generateAdminLog(container) {
             let log = '';
             
             log += `<div class="log-entry"><span class="log-label">Username:</span> <span class="log-value">${userChoices.username}</span></div>`;
+            log += `<div class="log-entry"><span class="log-label">Timestamp:</span> <span class="log-value">${userChoices.timestamp}</span></div>`;
             
             log += `<div class="log-entry"><strong style="color: #ff00ff;">--- ROUND 1: MCQ QUIZ ---</strong></div>`;
-            log += `<div class="log-entry"><span class="log-label">Q1 (Food):</span> <span class="log-value">${userChoices.q1}</span></div>`;
-            log += `<div class="log-entry"><span class="log-label">Q2 (Color):</span> <span class="log-value">${userChoices.q2}</span></div>`;
-            log += `<div class="log-entry"><span class="log-label">Q3 (Singer):</span> <span class="log-value">${userChoices.q3}</span></div>`;
-            log += `<div class="log-entry"><span class="log-label">Q4 (Chocolate):</span> <span class="log-value">${userChoices.q4}</span></div>`;
-            log += `<div class="log-entry"><span class="log-label">Q5 (Drink):</span> <span class="log-value">${userChoices.q5}</span></div>`;
-            log += `<div class="log-entry"><span class="log-label">Q6 (Food):</span> <span class="log-value">${userChoices.q6}</span></div>`;
+            log += `<div class="log-entry"><span class="log-label">Q1 (Food):</span> <span class="log-value">${userChoices.q1 || 'N/A'}</span></div>`;
+            log += `<div class="log-entry"><span class="log-label">Q2 (Color):</span> <span class="log-value">${userChoices.q2 || 'N/A'}</span></div>`;
+            log += `<div class="log-entry"><span class="log-label">Q3 (Singer):</span> <span class="log-value">${userChoices.q3 || 'N/A'}</span></div>`;
+            log += `<div class="log-entry"><span class="log-label">Q4 (Chocolate):</span> <span class="log-value">${userChoices.q4 || 'N/A'}</span></div>`;
+            log += `<div class="log-entry"><span class="log-label">Q5 (Drink):</span> <span class="log-value">${userChoices.q5 || 'N/A'}</span></div>`;
+            log += `<div class="log-entry"><span class="log-label">Q6 (Food):</span> <span class="log-value">${userChoices.q6 || 'N/A'}</span></div>`;
             
             log += `<div class="log-entry"><strong style="color: #ff00ff;">--- ROUND 2: BF ROUND ---</strong></div>`;
-            log += `<div class="log-entry"><span class="log-label">BF Question:</span> <span class="log-value">${userChoices.bf}</span></div>`;
+            log += `<div class="log-entry"><span class="log-label">BF Answer:</span> <span class="log-value">${userChoices.bf.toUpperCase()}</span></div>`;
             
             if (userChoices.bf === 'no') {
-                log += `<div class="log-entry"><strong style="color: #ff00ff;">--- ROUND 3: FINAL ROUND ---</strong></div>`;
-                log += `<div class="log-entry"><span class="log-label">Q1 (Impact):</span> <span class="log-value">${userChoices.f1}</span></div>`;
-                log += `<div class="log-entry"><span class="log-label">Q2 (Path):</span> <span class="log-value">${userChoices.f2}</span></div>`;
-                log += `<div class="log-entry"><span class="log-label">Q3 (Recovery):</span> <span class="log-value">${userChoices.f3}</span></div>`;
-                log += `<div class="log-entry"><span class="log-label">Q4 (Identity):</span> <span class="log-value">${userChoices.f4}</span></div>`;
-                log += `<div class="log-entry"><strong style="color: #ffff00;">FINAL SCORE:</strong> <span class="log-value" style="color: #00ff00; font-size: 14px;">${userChoices.finalScore}/20</span></div>`;
+                log += `<div class="log-entry"><strong style="color: #ff00ff;">--- ROUND 3: FINAL ROUND (Points) ---</strong></div>`;
+                
+                const f1Points = parseInt(document.querySelector('input[name="f1"]:checked').dataset.points);
+                const f2Points = parseInt(document.querySelector('input[name="f2"]:checked').dataset.points);
+                const f3Points = parseInt(document.querySelector('input[name="f3"]:checked').dataset.points);
+                const f4Points = parseInt(document.querySelector('input[name="f4"]:checked').dataset.points);
+                
+                log += `<div class="log-entry"><span class="log-label">Q1 (Impact) - ${userChoices.f1}:</span> <span class="log-value">${f1Points > 0 ? '+' : ''}${f1Points} Points</span></div>`;
+                log += `<div class="log-entry"><span class="log-label">Q2 (Path) - ${userChoices.f2}:</span> <span class="log-value">${f2Points > 0 ? '+' : ''}${f2Points} Points</span></div>`;
+                log += `<div class="log-entry"><span class="log-label">Q3 (Recovery) - ${userChoices.f3}:</span> <span class="log-value">${f3Points > 0 ? '+' : ''}${f3Points} Points</span></div>`;
+                log += `<div class="log-entry"><span class="log-label">Q4 (Identity) - ${userChoices.f4}:</span> <span class="log-value">${f4Points > 0 ? '+' : ''}${f4Points} Points</span></div>`;
+                log += `<div class="log-entry"><strong style="color: #ffff00;">FINAL SCORE:</strong> <span class="log-value" style="color: #00ff00; font-size: 14px;">${userChoices.finalScore}/25</span></div>`;
+                log += `<div class="log-entry"><strong style="color: #ff00ff;">STATUS:</strong> <span class="log-value" style="color: ${userChoices.finalScore >= 25 ? '#00ff00' : '#ff0000'};">${userChoices.status}</span></div>`;
             } else {
-                log += `<div class="log-entry"><strong style="color: #ffff00;">STATUS:</strong> <span class="log-value" style="color: #ff00ff;">REJECTED IN ROUND 2</span></div>`;
+                log += `<div class="log-entry"><strong style="color: #ffff00;">STATUS:</strong> <span class="log-value" style="color: #ff0000;">${userChoices.status}</span></div>`;
             }
 
             container.innerHTML = log;
+        }
+
+        function saveToDatabase() {
+            let allUsers = JSON.parse(localStorage.getItem('quizDatabase')) || [];
+            allUsers.push(userChoices);
+            localStorage.setItem('quizDatabase', JSON.stringify(allUsers));
         }
 
         function showScreen(screenId) {
@@ -1029,10 +1109,12 @@
         function restartGame() {
             userChoices = {
                 username: '',
+                timestamp: new Date().toLocaleString(),
                 q1: '', q2: '', q3: '', q4: '', q5: '', q6: '',
                 bf: '',
                 f1: '', f2: '', f3: '', f4: '',
-                finalScore: 0
+                finalScore: 0,
+                status: ''
             };
 
             document.getElementById('username').value = '';
@@ -1040,35 +1122,14 @@
             document.querySelectorAll('input[type="radio"]').forEach(radio => {
                 radio.checked = false;
             });
+            document.querySelectorAll('.points-display').forEach(el => {
+                el.classList.add('hidden');
+            });
 
             const doorContainer = document.getElementById('doorContainer');
             doorContainer.classList.remove('open');
 
             showScreen('stage1');
-        }
-
-        // Progress bar animation
-        document.addEventListener('DOMContentLoaded', () => {
-            const questions = document.querySelectorAll('input[type="radio"]');
-            questions.forEach(q => {
-                q.addEventListener('change', updateProgress);
-            });
-        });
-
-        function updateProgress() {
-            const quizQuestions = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6'];
-            let answered = 0;
-            
-            quizQuestions.forEach(q => {
-                if (document.querySelector(`input[name="${q}"]:checked`)) {
-                    answered++;
-                }
-            });
-
-            const progressFill = document.getElementById('progressFill');
-            if (progressFill) {
-                progressFill.style.width = (answered / 6 * 100) + '%';
-            }
         }
     </script>
 
