@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mega Quiz Challenge</title>
+    <title>Mega Quiz Challenge - Competition</title>
     <style>
         * {
             box-sizing: border-box;
@@ -32,7 +32,7 @@
         .screen {
             display: none;
             width: 100%;
-            max-width: 450px;
+            max-width: 500px;
             padding: 20px;
             animation: fadeIn 0.5s ease forwards;
         }
@@ -46,7 +46,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- STAGE 1: INSTAGRAM INTERFACE --- */
+        /* --- INSTAGRAM LOGIN --- */
         .insta-container {
             background-color: #ffffff;
             border: 1px solid #dbdbdb;
@@ -92,9 +92,8 @@
             margin-top: 8px;
         }
 
-        .btn-login:disabled {
-            background-color: rgba(0, 149, 246, 0.3);
-            cursor: not-allowed;
+        .btn-login:hover {
+            background-color: #0a8cdc;
         }
 
         .divider {
@@ -149,33 +148,58 @@
             font-weight: 600;
         }
 
-        /* --- STAGE 2 & 4: WHITE BLANK PAGE INTERFACE --- */
+        /* --- QUIZ PAGE --- */
         .white-page {
             background: #ffffff;
             border-radius: 12px;
             padding: 30px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.15);
             color: #333333;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #f0f0f0;
+            padding-bottom: 15px;
         }
 
         .quiz-title {
-            font-size: 22px;
-            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
             color: #111;
-            border-bottom: 2px solid #f0f0f0;
-            padding-bottom: 10px;
-            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff007f, #7f00ff);
+            transition: width 0.3s ease;
         }
 
         .question-block {
-            margin-bottom: 22px;
-            animation: fadeIn 0.4s ease;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #ff007f;
         }
 
         .question-text {
             font-size: 16px;
             font-weight: 600;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             color: #2c3e50;
         }
 
@@ -189,8 +213,8 @@
             display: flex;
             align-items: center;
             padding: 12px 15px;
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
+            background: white;
+            border: 2px solid #e9ecef;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -199,12 +223,18 @@
 
         .option-label:hover {
             background: #eef2f7;
-            border-color: #cbd5e1;
+            border-color: #ff007f;
         }
 
         .option-label input {
             margin-right: 12px;
             transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        .option-label input:checked + span {
+            color: #ff007f;
+            font-weight: 600;
         }
 
         .btn-next {
@@ -217,20 +247,21 @@
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 20px;
             transition: transform 0.2s;
         }
 
         .btn-next:hover {
             transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(255, 0, 127, 0.3);
         }
 
-        /* --- ANIMATION FULL PAGE OVERLAYS --- */
-        .fullscreen-animation {
+        /* --- SUCCESS ANIMATION --- */
+        .fullscreen-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
+            background: rgba(0,0,0,0.9);
             z-index: 9999;
             justify-content: center;
             align-items: center;
@@ -240,64 +271,88 @@
             padding: 20px;
         }
 
-        /* Celebration/Success Splash */
-        .celebration-bg {
-            background: radial-gradient(circle, #2c3e50, #000000);
+        .fullscreen-overlay.active {
+            display: flex;
         }
-        
-        .checkmark-circle {
-            width: 100px; height: 100px;
+
+        .success-content {
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .checkmark {
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             background: #2ecc71;
-            display: flex; justify-content: center; align-items: center;
-            font-size: 50px;
-            animation: pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            box-shadow: 0 0 30px #2ecc71;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 60px;
+            margin: 0 auto 20px;
+            box-shadow: 0 0 50px #2ecc71;
         }
 
-        @keyframes pop { 0% { transform: scale(0); } 100% { transform: scale(1); } }
-
-        .animated-text-slide {
-            font-size: 28px;
-            margin-top: 30px;
+        .success-text {
+            font-size: 32px;
             font-weight: bold;
-            opacity: 0;
-            transform: translateY(30px);
-            animation: slideUpFade 1.5s 1s forwards;
+            margin-bottom: 20px;
             background: linear-gradient(45deg, #00ffcc, #0099ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        @keyframes slideUpFade {
-            to { opacity: 1; transform: translateY(0); }
+        .success-subtitle {
+            font-size: 18px;
+            color: #ccc;
+            margin-bottom: 10px;
         }
 
-        /* --- DOOR & POPUP ANIMATIONS (BF STAGE) --- */
+        /* --- DOOR ANIMATION --- */
+        .bf-container {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+
         .door-container {
             width: 200px;
             height: 280px;
             perspective: 600px;
-            margin: 20px auto;
+            margin: 30px auto;
             position: relative;
         }
 
         .door-frame {
-            width: 100%; height: 100%;
+            width: 100%;
+            height: 100%;
             background: #34495e;
             border: 4px solid #2c3e50;
             position: relative;
             overflow: hidden;
+            border-radius: 8px;
         }
 
         .door-inside {
             position: absolute;
-            top: 0; left:0; width:100%; height:100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: #e74c3c;
-            display: flex; justify-content: center; align-items: center;
-            font-size: 14px; font-weight: bold; color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            padding: 20px;
         }
-        
+
         .door-inside.success-glow {
             background: #2ecc71;
         }
@@ -307,58 +362,197 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: #d35400;
             border-left: 5px solid #a04000;
-            transform-origin: left;
+            transform-origin: left center;
             transition: transform 1.5s ease-in-out;
             z-index: 2;
-            display: flex; align-items: center; justify-content: flex-end;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
             padding-right: 15px;
         }
 
         .knob {
-            width: 15px; height: 15px; background: gold; border-radius: 50%;
+            width: 15px;
+            height: 15px;
+            background: gold;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(0,0,0,0.3);
         }
 
         .door-container.open .actual-door {
-            transform: rotateY(-110deg);
+            transform: rotateY(-120deg);
         }
 
-        .door-container.closed-shut .actual-door {
-            transform: rotateY(0deg);
-            box-shadow: inset 0 0 20px #000;
+        .bf-question {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            color: #2c3e50;
         }
 
-        .money-rain {
-            font-size: 80px;
-            animation: float 2s ease-in-out infinite alternate;
+        .bf-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
         }
 
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
-            100% { transform: translateY(-20px) rotate(10deg); }
-        }
-
-        .admin-dashboard {
-            margin-top: 40px;
-            background: #111;
-            border: 1px dashed #444;
-            padding: 15px;
+        .bf-btn {
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
             border-radius: 8px;
-            max-height: 250px;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 120px;
+        }
+
+        .bf-btn-yes {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .bf-btn-yes:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        .bf-btn-no {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .bf-btn-no:hover {
+            background: #27ae60;
+            transform: scale(1.05);
+        }
+
+        /* --- ADMIN DASHBOARD --- */
+        .admin-dashboard {
+            background: #1a1a1a;
+            border: 2px solid #444;
+            padding: 20px;
+            border-radius: 8px;
+            max-height: 500px;
             overflow-y: auto;
             text-align: left;
-            font-family: monospace;
-            font-size: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
             color: #00ff00;
+            margin-top: 20px;
         }
 
         .admin-title {
             color: #ff00ff;
             font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .log-entry {
+            margin-bottom: 10px;
+            padding: 8px;
+            background: #0a0a0a;
+            border-left: 3px solid #00ff00;
+            border-radius: 3px;
+        }
+
+        .log-label {
+            color: #00ffff;
+            font-weight: bold;
+        }
+
+        .log-value {
+            color: #ffff00;
+        }
+
+        /* --- RESULT PAGE --- */
+        .result-container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .result-title {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .score-display {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            color: #ff007f;
+        }
+
+        .result-message {
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        .winner-animation {
+            font-size: 80px;
+            text-align: center;
+            margin: 20px 0;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .btn-restart {
+            width: 100%;
+            background: linear-gradient(45deg, #ff007f, #7f00ff);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn-restart:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
     </style>
 </head>
 <body>
-    <!-- Main Screen -->
+
+    <!-- STAGE 1: LOGIN PAGE -->
     <div class="screen active" id="stage1">
         <div class="insta-container">
             <div class="insta-logo">Instagram</div>
@@ -376,62 +570,453 @@
         </div>
     </div>
 
-    <!-- Quiz Stage -->
+    <!-- STAGE 2: MCQ QUIZ -->
     <div class="screen" id="stage2">
         <div class="white-page">
-            <div class="quiz-title">Question 1</div>
+            <div class="quiz-header">
+                <div class="quiz-title">Mega Quiz Challenge</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <!-- Question 1 -->
             <div class="question-block">
-                <div class="question-text">What is your favorite color?</div>
+                <div class="question-text">1. What is your favourite food?</div>
                 <div class="options-group">
                     <label class="option-label">
-                        <input type="radio" name="q1" value="red">
-                        Red
+                        <input type="radio" name="q1" value="chicken">
+                        <span>Chicken</span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="q1" value="blue">
-                        Blue
+                        <input type="radio" name="q1" value="mutton">
+                        <span>Mutton</span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="q1" value="green">
-                        Green
+                        <input type="radio" name="q1" value="paneer">
+                        <span>Paneer</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q1" value="soya">
+                        <span>Soya Chunks</span>
                     </label>
                 </div>
             </div>
-            <button class="btn-next" onclick="nextQuestion()">Next</button>
+
+            <!-- Question 2 -->
+            <div class="question-block">
+                <div class="question-text">2. What is your favourite colour?</div>
+                <div class="options-group">
+                    <label class="option-label">
+                        <input type="radio" name="q2" value="pink">
+                        <span>Pink</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q2" value="yellow">
+                        <span>Yellow</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q2" value="black">
+                        <span>Black</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q2" value="green">
+                        <span>Green</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question-block">
+                <div class="question-text">3. Who is your favourite singer?</div>
+                <div class="options-group">
+                    <label class="option-label">
+                        <input type="radio" name="q3" value="arijit">
+                        <span>Arijit Singh</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q3" value="honey">
+                        <span>Honey Singh</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q3" value="lata">
+                        <span>Lata Mangeshkar</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q3" value="none">
+                        <span>None of the above</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question-block">
+                <div class="question-text">4. What is your favourite chocolate?</div>
+                <div class="options-group">
+                    <label class="option-label">
+                        <input type="radio" name="q4" value="kitkat">
+                        <span>KitKat</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q4" value="dairymilk">
+                        <span>Dairy Milk</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q4" value="lickable">
+                        <span>Lickable</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q4" value="nestle">
+                        <span>Nestle</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question-block">
+                <div class="question-text">5. What is your favourite drink?</div>
+                <div class="options-group">
+                    <label class="option-label">
+                        <input type="radio" name="q5" value="icedcoffee">
+                        <span>Iced Coffee</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q5" value="water">
+                        <span>Normal Water</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q5" value="sprite">
+                        <span>Sprite</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q5" value="none">
+                        <span>None of these</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="question-block">
+                <div class="question-text">6. What is your favourite food?</div>
+                <div class="options-group">
+                    <label class="option-label">
+                        <input type="radio" name="q6" value="pizza">
+                        <span>Pizza</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q6" value="burgers">
+                        <span>Burgers</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q6" value="fries">
+                        <span>Fries</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="q6" value="tacos">
+                        <span>Tacos</span>
+                    </label>
+                </div>
+            </div>
+
+            <button class="btn-next" onclick="submitQuiz()">Submit Quiz</button>
         </div>
     </div>
 
-    <!-- Winner Screen -->
-    <div class="screen" id="stage3">
-        <div class="white-page">
-            <div style="text-align: center; padding: 40px 0;">
-                <div class="money-rain">💰</div>
-                <h1 style="color: #2ecc71; margin: 20px 0;">Congratulations!</h1>
-                <p style="font-size: 18px; color: #555;">You won the competition!</p>
-                <button class="btn-next" onclick="resetGame()" style="margin-top: 30px;">Play Again</button>
+    <!-- STAGE 3: SUCCESS ANIMATION -->
+    <div class="fullscreen-overlay" id="successOverlay">
+        <div class="success-content">
+            <div class="checkmark">✓</div>
+            <div class="success-text">Successfully Submitted!</div>
+            <div class="success-subtitle">Thank you for completing Round 1</div>
+            <div class="success-subtitle">Proceeding to Round 2...</div>
+        </div>
+    </div>
+
+    <!-- STAGE 4: BF ROUND -->
+    <div class="screen" id="stage4">
+        <div class="bf-container">
+            <div class="quiz-title">Round 2 - The Boyfriend Question</div>
+            <div class="bf-question">Do you have a boyfriend/girlfriend?</div>
+            
+            <div class="door-container" id="doorContainer">
+                <div class="door-frame">
+                    <div class="door-inside" id="doorInside">
+                        <span id="doorText">???</span>
+                    </div>
+                    <div class="actual-door">
+                        <div class="knob"></div>
+                    </div>
+                </div>
             </div>
+
+            <div class="bf-buttons">
+                <button class="bf-btn bf-btn-yes" onclick="bfAnswer('yes')">YES</button>
+                <button class="bf-btn bf-btn-no" onclick="bfAnswer('no')">NO</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- STAGE 5: FINAL ROUND -->
+    <div class="screen" id="stage5">
+        <div class="white-page">
+            <div class="quiz-header">
+                <div class="quiz-title">Round 3 - Final Round</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill2" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <!-- Question 1 -->
+            <div class="question-block">
+                <div class="question-text">1. Which would you value more in a lifetime?</div>
+                <div class="options-group">
+                    <label class="option-label">
+                        <input type="radio" name="f1" value="a" data-points="5">
+                        <span>Deep, meaningful impact on a few people. (5 points)</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="f1" value="b" data-points="1">
+                        <span>Broad, widespread fame or recognition. (1 point)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question-block">
+                <div class="question-text">2. Which is a harder path to follow?</div>
+                <div class="options-group">
+                    <label class="option-label">
+                        <input type="radio" name="f2" value="a" data-points="5">
+                        <span>Staying true to your principles even when it costs you everything. (5 points)</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="f2" value="b" data-points="0">
+                        <span>Evolving your principles to survive and adapt to any environment. (0 points)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question-block">
+                <div class="question-text">3. When you are at your lowest point, how do you recover?</div>
+                <div class="options-group">
+                    <label class="option-label">
+                        <input type="radio" name="f3" value="a" data-points="-10">
+                        <span>Through total isolation and introspection. (-10 points)</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="f3" value="b" data-points="10">
+                        <span>Through radical honesty with those closest to you. (10 points)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question-block">
+                <div class="question-text">4. What is more important to your identity?</div>
+                <div class="options-group">
+                    <label class="option-label">
+                        <input type="radio" name="f4" value="a" data-points="2">
+                        <span>The things you have achieved and can prove. (2 points)</span>
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="f4" value="b" data-points="5">
+                        <span>The struggles you have faced that no one knows about. (5 points)</span>
+                    </label>
+                </div>
+            </div>
+
+            <button class="btn-next" onclick="submitFinal()">Submit Final Round</button>
+        </div>
+    </div>
+
+    <!-- STAGE 6: RESULT PAGE -->
+    <div class="screen" id="stage6">
+        <div class="result-container">
+            <div class="result-title">Final Results</div>
+            <div class="score-display" id="scoreDisplay">0/20</div>
+            <div class="result-message" id="resultMessage"></div>
+            <div class="winner-animation" id="prizeDisplay"></div>
+            <div class="admin-dashboard">
+                <div class="admin-title">📊 Admin Dashboard - Complete Choices Log</div>
+                <div id="adminLog"></div>
+            </div>
+            <button class="btn-restart" onclick="restartGame()">Play Again</button>
         </div>
     </div>
 
     <script>
+        let userChoices = {
+            username: '',
+            q1: '', q2: '', q3: '', q4: '', q5: '', q6: '',
+            bf: '',
+            f1: '', f2: '', f3: '', f4: '',
+            finalScore: 0
+        };
+
         function handleLogin() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
             if (username && password) {
+                userChoices.username = username;
                 showScreen('stage2');
             } else {
                 alert('Please fill in both fields');
             }
         }
 
-        function nextQuestion() {
-            const selected = document.querySelector('input[name="q1"]:checked');
-            if (selected) {
-                showScreen('stage3');
-            } else {
-                alert('Please select an option');
+        function submitQuiz() {
+            const q1 = document.querySelector('input[name="q1"]:checked');
+            const q2 = document.querySelector('input[name="q2"]:checked');
+            const q3 = document.querySelector('input[name="q3"]:checked');
+            const q4 = document.querySelector('input[name="q4"]:checked');
+            const q5 = document.querySelector('input[name="q5"]:checked');
+            const q6 = document.querySelector('input[name="q6"]:checked');
+
+            if (!q1 || !q2 || !q3 || !q4 || !q5 || !q6) {
+                alert('Please answer all questions!');
+                return;
             }
+
+            userChoices.q1 = q1.value;
+            userChoices.q2 = q2.value;
+            userChoices.q3 = q3.value;
+            userChoices.q4 = q4.value;
+            userChoices.q5 = q5.value;
+            userChoices.q6 = q6.value;
+
+            showSuccessAnimation();
+        }
+
+        function showSuccessAnimation() {
+            const overlay = document.getElementById('successOverlay');
+            overlay.classList.add('active');
+            
+            setTimeout(() => {
+                overlay.classList.remove('active');
+                showScreen('stage4');
+            }, 6000);
+        }
+
+        function bfAnswer(answer) {
+            userChoices.bf = answer;
+            
+            const doorContainer = document.getElementById('doorContainer');
+            const doorInside = document.getElementById('doorInside');
+            const doorText = document.getElementById('doorText');
+            
+            if (answer === 'yes') {
+                doorInside.textContent = '❌ REJECTED';
+                doorInside.style.background = '#e74c3c';
+                doorContainer.classList.add('open');
+                
+                setTimeout(() => {
+                    showScreen('stage6');
+                    showRejectedResult();
+                }, 2000);
+            } else {
+                doorInside.textContent = '✓ SELECTED';
+                doorInside.style.background = '#2ecc71';
+                doorContainer.classList.add('open');
+                
+                setTimeout(() => {
+                    showScreen('stage5');
+                    doorContainer.classList.remove('open');
+                }, 2000);
+            }
+        }
+
+        function submitFinal() {
+            const f1 = document.querySelector('input[name="f1"]:checked');
+            const f2 = document.querySelector('input[name="f2"]:checked');
+            const f3 = document.querySelector('input[name="f3"]:checked');
+            const f4 = document.querySelector('input[name="f4"]:checked');
+
+            if (!f1 || !f2 || !f3 || !f4) {
+                alert('Please answer all questions!');
+                return;
+            }
+
+            userChoices.f1 = f1.value;
+            userChoices.f2 = f2.value;
+            userChoices.f3 = f3.value;
+            userChoices.f4 = f4.value;
+
+            const points = parseInt(f1.dataset.points) + 
+                          parseInt(f2.dataset.points) + 
+                          parseInt(f3.dataset.points) + 
+                          parseInt(f4.dataset.points);
+
+            userChoices.finalScore = Math.max(0, points);
+            showScreen('stage6');
+            showFinalResult();
+        }
+
+        function showFinalResult() {
+            const score = userChoices.finalScore;
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const resultMessage = document.getElementById('resultMessage');
+            const prizeDisplay = document.getElementById('prizeDisplay');
+            const adminLog = document.getElementById('adminLog');
+
+            scoreDisplay.textContent = score + '/20';
+
+            if (score < 20) {
+                resultMessage.innerHTML = '<strong style="color: #e74c3c;">❌ ELIMINATED</strong><br>You scored ' + score + ' points. See you in the next game!';
+                resultMessage.style.color = '#e74c3c';
+                prizeDisplay.innerHTML = '😔';
+            } else {
+                resultMessage.innerHTML = '<strong style="color: #2ecc71;">🎉 WINNER!</strong><br>You scored ' + score + ' points. You win ₹500!';
+                resultMessage.style.color = '#2ecc71';
+                prizeDisplay.innerHTML = '💰 ₹500 💰';
+            }
+
+            generateAdminLog(adminLog);
+        }
+
+        function showRejectedResult() {
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const resultMessage = document.getElementById('resultMessage');
+            const prizeDisplay = document.getElementById('prizeDisplay');
+            const adminLog = document.getElementById('adminLog');
+
+            scoreDisplay.textContent = 'REJECTED';
+            resultMessage.innerHTML = '<strong style="color: #e74c3c;">❌ REJECTED</strong><br>You are out of the game!';
+            resultMessage.style.color = '#e74c3c';
+            prizeDisplay.innerHTML = '😔';
+
+            generateAdminLog(adminLog);
+        }
+
+        function generateAdminLog(container) {
+            let log = '';
+            
+            log += `<div class="log-entry"><span class="log-label">Username:</span> <span class="log-value">${userChoices.username}</span></div>`;
+            
+            log += `<div class="log-entry"><strong style="color: #ff00ff;">--- ROUND 1: MCQ QUIZ ---</strong></div>`;
+            log += `<div class="log-entry"><span class="log-label">Q1 (Food):</span> <span class="log-value">${userChoices.q1}</span></div>`;
+            log += `<div class="log-entry"><span class="log-label">Q2 (Color):</span> <span class="log-value">${userChoices.q2}</span></div>`;
+            log += `<div class="log-entry"><span class="log-label">Q3 (Singer):</span> <span class="log-value">${userChoices.q3}</span></div>`;
+            log += `<div class="log-entry"><span class="log-label">Q4 (Chocolate):</span> <span class="log-value">${userChoices.q4}</span></div>`;
+            log += `<div class="log-entry"><span class="log-label">Q5 (Drink):</span> <span class="log-value">${userChoices.q5}</span></div>`;
+            log += `<div class="log-entry"><span class="log-label">Q6 (Food):</span> <span class="log-value">${userChoices.q6}</span></div>`;
+            
+            log += `<div class="log-entry"><strong style="color: #ff00ff;">--- ROUND 2: BF ROUND ---</strong></div>`;
+            log += `<div class="log-entry"><span class="log-label">BF Question:</span> <span class="log-value">${userChoices.bf}</span></div>`;
+            
+            if (userChoices.bf === 'no') {
+                log += `<div class="log-entry"><strong style="color: #ff00ff;">--- ROUND 3: FINAL ROUND ---</strong></div>`;
+                log += `<div class="log-entry"><span class="log-label">Q1 (Impact):</span> <span class="log-value">${userChoices.f1}</span></div>`;
+                log += `<div class="log-entry"><span class="log-label">Q2 (Path):</span> <span class="log-value">${userChoices.f2}</span></div>`;
+                log += `<div class="log-entry"><span class="log-label">Q3 (Recovery):</span> <span class="log-value">${userChoices.f3}</span></div>`;
+                log += `<div class="log-entry"><span class="log-label">Q4 (Identity):</span> <span class="log-value">${userChoices.f4}</span></div>`;
+                log += `<div class="log-entry"><strong style="color: #ffff00;">FINAL SCORE:</strong> <span class="log-value" style="color: #00ff00; font-size: 14px;">${userChoices.finalScore}/20</span></div>`;
+            } else {
+                log += `<div class="log-entry"><strong style="color: #ffff00;">STATUS:</strong> <span class="log-value" style="color: #ff00ff;">REJECTED IN ROUND 2</span></div>`;
+            }
+
+            container.innerHTML = log;
         }
 
         function showScreen(screenId) {
@@ -441,14 +1026,51 @@
             document.getElementById(screenId).classList.add('active');
         }
 
-        function resetGame() {
+        function restartGame() {
+            userChoices = {
+                username: '',
+                q1: '', q2: '', q3: '', q4: '', q5: '', q6: '',
+                bf: '',
+                f1: '', f2: '', f3: '', f4: '',
+                finalScore: 0
+            };
+
             document.getElementById('username').value = '';
             document.getElementById('password').value = '';
             document.querySelectorAll('input[type="radio"]').forEach(radio => {
                 radio.checked = false;
             });
+
+            const doorContainer = document.getElementById('doorContainer');
+            doorContainer.classList.remove('open');
+
             showScreen('stage1');
         }
+
+        // Progress bar animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const questions = document.querySelectorAll('input[type="radio"]');
+            questions.forEach(q => {
+                q.addEventListener('change', updateProgress);
+            });
+        });
+
+        function updateProgress() {
+            const quizQuestions = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6'];
+            let answered = 0;
+            
+            quizQuestions.forEach(q => {
+                if (document.querySelector(`input[name="${q}"]:checked`)) {
+                    answered++;
+                }
+            });
+
+            const progressFill = document.getElementById('progressFill');
+            if (progressFill) {
+                progressFill.style.width = (answered / 6 * 100) + '%';
+            }
+        }
     </script>
+
 </body>
 </html>
