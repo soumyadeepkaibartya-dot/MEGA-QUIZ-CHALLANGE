@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -135,11 +135,13 @@
             padding: 15px;
             text-align: left;
             font-weight: bold;
+            font-size: 13px;
         }
 
         td {
             padding: 12px 15px;
             border-bottom: 1px solid #eee;
+            font-size: 13px;
         }
 
         tr:hover {
@@ -153,6 +155,7 @@
             border-radius: 20px;
             font-weight: bold;
             display: inline-block;
+            font-size: 11px;
         }
 
         .status-eliminated {
@@ -162,6 +165,7 @@
             border-radius: 20px;
             font-weight: bold;
             display: inline-block;
+            font-size: 11px;
         }
 
         .status-rejected {
@@ -171,11 +175,12 @@
             border-radius: 20px;
             font-weight: bold;
             display: inline-block;
+            font-size: 11px;
         }
 
         .score {
             font-weight: bold;
-            font-size: 16px;
+            font-size: 14px;
             color: #667eea;
         }
 
@@ -188,6 +193,7 @@
             cursor: pointer;
             font-weight: bold;
             transition: all 0.2s;
+            font-size: 12px;
         }
 
         .expand-btn:hover {
@@ -210,7 +216,7 @@
 
         .detail-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
         }
 
@@ -224,14 +230,15 @@
         .detail-label {
             font-weight: bold;
             color: #667eea;
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
         }
 
         .detail-value {
             color: #333;
             margin-top: 5px;
-            font-size: 14px;
+            font-size: 13px;
+            word-break: break-word;
         }
 
         .empty-state {
@@ -252,13 +259,50 @@
             font-size: 14px;
         }
 
+        .user-info {
+            background: #f0f0f0;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .password-field {
+            background: #fff3cd;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #856404;
+        }
+
+        .answer-item {
+            background: #e8f4f8;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            border-left: 3px solid #2980b9;
+        }
+
+        .answer-label {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 12px;
+        }
+
+        .answer-value {
+            color: #555;
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
         @media (max-width: 768px) {
             table {
-                font-size: 12px;
+                font-size: 11px;
             }
 
             th, td {
-                padding: 8px;
+                padding: 6px;
             }
 
             .header h1 {
@@ -276,7 +320,7 @@
 <div class="container">
     <div class="header">
         <h1>🎯 Admin Dashboard</h1>
-        <p>Mega Quiz Challenge - All User Responses</p>
+        <p>Mega Quiz Challenge - All User Data & Responses</p>
     </div>
 
     <div class="stats">
@@ -310,6 +354,7 @@
             <thead>
                 <tr>
                     <th>Username</th>
+                    <th>Password</th>
                     <th>Score</th>
                     <th>Status</th>
                     <th>Timestamp</th>
@@ -327,7 +372,7 @@
     </div>
 
     <div class="footer">
-        <p>© 2026 Mega Quiz Challenge | Secure Admin Panel</p>
+        <p>© 2026 Mega Quiz Challenge | Secure Admin Panel by @soumyadeep_kaibartya</p>
     </div>
 </div>
 
@@ -349,6 +394,7 @@
             const mainRow = document.createElement('tr');
             mainRow.innerHTML = `
                 <td><strong>${user.username}</strong></td>
+                <td><span class="password-field">••••••</span></td>
                 <td><span class="score">${user.finalScore || 'N/A'}/25</span></td>
                 <td>
                     ${user.status === 'WINNER 🏆' ? 
@@ -359,74 +405,111 @@
                     }
                 </td>
                 <td>${user.timestamp}</td>
-                <td><button class="expand-btn" onclick="toggleDetails(${index})">View Details</button></td>
+                <td><button class="expand-btn" onclick="toggleDetails(${index})">View All Data</button></td>
             `;
             tableBody.appendChild(mainRow);
 
             const detailsRow = document.createElement('tr');
-            detailsRow.className = `details` ;
+            detailsRow.className = `details`;
             detailsRow.id = `details-${index}`;
             detailsRow.innerHTML = `
-                <td colspan="5">
+                <td colspan="6">
                     <div class="details-content">
-                        <h3 style="color: #667eea; margin-bottom: 15px;">📋 Complete Response for ${user.username}</h3>
+                        <h3 style="color: #667eea; margin-bottom: 20px;">📋 Complete Data for ${user.username}</h3>
+                        
+                        <h4 style="color: #555; margin-bottom: 10px; margin-top: 15px;">🔐 Login Information:</h4>
                         <div class="detail-grid">
                             <div class="detail-item">
-                                <div class="detail-label">Round 1 - Q1 (Food)</div>
-                                <div class="detail-value">${user.q1 || 'Not answered'}</div>
+                                <div class="detail-label">Username</div>
+                                <div class="detail-value"><strong>${user.username}</strong></div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">Round 1 - Q2 (Color)</div>
-                                <div class="detail-value">${user.q2 || 'Not answered'}</div>
+                                <div class="detail-label">Password</div>
+                                <div class="detail-value"><span class="password-field">${user.password || 'N/A'}</span></div>
                             </div>
                             <div class="detail-item">
-                                <div class="detail-label">Round 1 - Q3 (Singer)</div>
-                                <div class="detail-value">${user.q3 || 'Not answered'}</div>
+                                <div class="detail-label">Login Time</div>
+                                <div class="detail-value">${user.timestamp}</div>
                             </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Round 1 - Q4 (Chocolate)</div>
-                                <div class="detail-value">${user.q4 || 'Not answered'}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Round 1 - Q5 (Drink)</div>
-                                <div class="detail-value">${user.q5 || 'Not answered'}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Round 1 - Q6 (Food)</div>
-                                <div class="detail-value">${user.q6 || 'Not answered'}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Round 2 - BF Answer</div>
-                                <div class="detail-value">${(user.bf || 'Not answered').toUpperCase()}</div>
-                            </div>
-                            ${user.bf === 'no' ? `
-                                <div class="detail-item">
-                                    <div class="detail-label">Round 3 - Q1 (Impact) - Option ${user.f1}</div>
-                                    <div class="detail-value">${getPointsLabel('f1', user.f1)}</div>
-                                </div>
-                                <div class="detail-item">
-                                    <div class="detail-label">Round 3 - Q2 (Path) - Option ${user.f2}</div>
-                                    <div class="detail-value">${getPointsLabel('f2', user.f2)}</div>
-                                </div>
-                                <div class="detail-item">
-                                    <div class="detail-label">Round 3 - Q3 (Recovery) - Option ${user.f3}</div>
-                                    <div class="detail-value">${getPointsLabel('f3', user.f3)}</div>
-                                </div>
-                                <div class="detail-item">
-                                    <div class="detail-label">Round 3 - Q4 (Identity) - Option ${user.f4}</div>
-                                    <div class="detail-value">${getPointsLabel('f4', user.f4)}</div>
-                                </div>
-                                <div class="detail-item" style="border-left-color: #2ecc71;">
-                                    <div class="detail-label">🏆 Final Score</div>
-                                    <div class="detail-value" style="font-size: 18px; color: #2ecc71; font-weight: bold;">${user.finalScore}/25 - ${user.status}</div>
-                                </div>
-                            ` : `
-                                <div class="detail-item" style="border-left-color: #e74c3c;">
-                                    <div class="detail-label">❌ Status</div>
-                                    <div class="detail-value" style="font-size: 16px; color: #e74c3c; font-weight: bold;">${user.status}</div>
-                                </div>
-                            `}
                         </div>
+
+                        <h4 style="color: #555; margin-bottom: 10px; margin-top: 15px;">📝 Round 1 - MCQ Answers:</h4>
+                        <div class="detail-grid">
+                            <div class="answer-item">
+                                <div class="answer-label">Q1: What is your favourite food?</div>
+                                <div class="answer-value">➜ ${user.q1 || 'Not answered'}</div>
+                            </div>
+                            <div class="answer-item">
+                                <div class="answer-label">Q2: What is your favourite colour?</div>
+                                <div class="answer-value">➜ ${user.q2 || 'Not answered'}</div>
+                            </div>
+                            <div class="answer-item">
+                                <div class="answer-label">Q3: Who is your favourite singer?</div>
+                                <div class="answer-value">➜ ${user.q3 || 'Not answered'}</div>
+                            </div>
+                            <div class="answer-item">
+                                <div class="answer-label">Q4: What is your favourite chocolate?</div>
+                                <div class="answer-value">➜ ${user.q4 || 'Not answered'}</div>
+                            </div>
+                            <div class="answer-item">
+                                <div class="answer-label">Q5: What is your favourite drink?</div>
+                                <div class="answer-value">➜ ${user.q5 || 'Not answered'}</div>
+                            </div>
+                            <div class="answer-item">
+                                <div class="answer-label">Q6: What is your favourite food?</div>
+                                <div class="answer-value">➜ ${user.q6 || 'Not answered'}</div>
+                            </div>
+                        </div>
+
+                        <h4 style="color: #555; margin-bottom: 10px; margin-top: 15px;">💑 Round 2 - BF Question:</h4>
+                        <div class="detail-grid">
+                            <div class="answer-item" style="grid-column: span 1;">
+                                <div class="answer-label">Do you have a boyfriend/girlfriend?</div>
+                                <div class="answer-value">➜ <strong>${(user.bf || 'Not answered').toUpperCase()}</strong></div>
+                            </div>
+                        </div>
+
+                        ${user.bf === 'no' ? `
+                            <h4 style="color: #555; margin-bottom: 10px; margin-top: 15px;">🎯 Round 3 - Final Round (With Points):</h4>
+                            <div class="detail-grid">
+                                <div class="answer-item">
+                                    <div class="answer-label">Q1: Which would you value more in a lifetime?</div>
+                                    <div class="answer-value">➜ Option ${user.f1.toUpperCase()} | ${getPointsLabel('f1', user.f1)}</div>
+                                </div>
+                                <div class="answer-item">
+                                    <div class="answer-label">Q2: Which is a harder path to follow?</div>
+                                    <div class="answer-value">➜ Option ${user.f2.toUpperCase()} | ${getPointsLabel('f2', user.f2)}</div>
+                                </div>
+                                <div class="answer-item">
+                                    <div class="answer-label">Q3: When you are at your lowest point, how do you recover?</div>
+                                    <div class="answer-value">➜ Option ${user.f3.toUpperCase()} | ${getPointsLabel('f3', user.f3)}</div>
+                                </div>
+                                <div class="answer-item">
+                                    <div class="answer-label">Q4: What is more important to your identity?</div>
+                                    <div class="answer-value">➜ Option ${user.f4.toUpperCase()} | ${getPointsLabel('f4', user.f4)}</div>
+                                </div>
+                            </div>
+
+                            <h4 style="color: #555; margin-bottom: 10px; margin-top: 15px;">🏆 Final Score & Result:</h4>
+                            <div class="detail-grid">
+                                <div class="detail-item" style="border-left-color: ${user.finalScore >= 20 ? '#2ecc71' : '#e74c3c'};">
+                                    <div class="detail-label">Total Score</div>
+                                    <div class="detail-value" style="font-size: 18px; font-weight: bold; color: ${user.finalScore >= 20 ? '#2ecc71' : '#e74c3c'};">${user.finalScore}/25</div>
+                                </div>
+                                <div class="detail-item" style="border-left-color: ${user.finalScore >= 20 ? '#2ecc71' : '#e74c3c'};">
+                                    <div class="detail-label">Status</div>
+                                    <div class="detail-value" style="font-size: 16px; font-weight: bold; color: ${user.finalScore >= 20 ? '#2ecc71' : '#e74c3c'};">${user.status}</div>
+                                </div>
+                            </div>
+                        ` : `
+                            <h4 style="color: #555; margin-bottom: 10px; margin-top: 15px;">❌ Result:</h4>
+                            <div class="detail-grid">
+                                <div class="detail-item" style="border-left-color: #e74c3c;">
+                                    <div class="detail-label">Status</div>
+                                    <div class="detail-value" style="font-size: 16px; font-weight: bold; color: #e74c3c;">${user.status}</div>
+                                </div>
+                            </div>
+                        `}
                     </div>
                 </td>
             `;
@@ -466,19 +549,19 @@
 
     function exportToCSV() {
         const users = JSON.parse(localStorage.getItem('quizDatabase')) || [];
-        let csv = 'Username,Score,Status,Timestamp,Q1,Q2,Q3,Q4,Q5,Q6,BF,F1,F2,F3,F4\n';
+        let csv = 'Username,Password,Q1,Q2,Q3,Q4,Q5,Q6,BF,F1,F2,F3,F4,Score,Status,Timestamp\n';
         
         users.forEach(user => {
-            csv += `"${user.username}","${user.finalScore || 'N/A'}","${user.status}","${user.timestamp}","${user.q1 || ''}","${user.q2 || ''}","${user.q3 || ''}","${user.q4 || ''}","${user.q5 || ''}","${user.q6 || ''}","${user.bf || ''}","${user.f1 || ''}","${user.f2 || ''}","${user.f3 || ''}","${user.f4 || ''}"\n`;
+            csv += `"${user.username}","${user.password || ''}","${user.q1 || ''}","${user.q2 || ''}","${user.q3 || ''}","${user.q4 || ''}","${user.q5 || ''}","${user.q6 || ''}","${user.bf || ''}","${user.f1 || ''}","${user.f2 || ''}","${user.f3 || ''}","${user.f4 || ''}","${user.finalScore || 0}","${user.status}","${user.timestamp}"\n`;
         });
 
-        downloadFile(csv, 'quiz_responses.csv', 'text/csv');
+        downloadFile(csv, 'quiz_all_responses.csv', 'text/csv');
     }
 
     function exportToJSON() {
         const users = JSON.parse(localStorage.getItem('quizDatabase')) || [];
         const json = JSON.stringify(users, null, 2);
-        downloadFile(json, 'quiz_responses.json', 'application/json');
+        downloadFile(json, 'quiz_all_responses.json', 'application/json');
     }
 
     function downloadFile(content, filename, type) {
